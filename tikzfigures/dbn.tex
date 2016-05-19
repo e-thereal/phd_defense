@@ -1,0 +1,88 @@
+
+\begin{tikzpicture}
+  \tikzstyle{every node}+=[font=\scriptsize]
+  \tikzstyle{gnode}=[shape=circle,draw=black,inner sep=0pt,
+  minimum width=11pt] 
+  \tikzstyle{featuremap}=[draw,fill=white,fill opacity=1,
+matrix of math nodes, inner sep=1.5pt]
+\tikzstyle{every pin}+=[inner sep=1pt,align=center]
+  
+  % Image
+  \matrix[featuremap] (image) {
+    v_1 & v_2 & v_3 \\
+    v_4 & v_5 & v_6 \\
+    v_7 & v_8 & v_9 \\
+  };
+  
+  \node[fit=(image),pin=90:Image] (bimage) {};
+  
+  % RBM 1
+  
+  \foreach \x in {1,...,6} {
+  \ifnum\x=5
+    \node[gnode,dashed] (v\x) at (2, 0.5*\x - 1.75) {\scriptsize\ldots};
+  \else
+  \ifnum\x=6
+    \node[gnode] (v\x) at (2, 0.5*\x - 1.75) {$v_9$};
+  \else
+    \node[gnode] (v\x) at (2, 0.5*\x - 1.75) {$v_\x$};
+  \fi
+  \fi
+  }
+  
+  \foreach \y in {1,...,4} {
+    \node[gnode] (h\y) at (3.25, 0.6*\y - 1.5) {$h_\y$};
+  }
+
+  \foreach \x in {1,...,6} {
+    \foreach \y in {1,...,4} {
+      \ifnum\x=5
+        \draw[dashed] (v\x)--(h\y);
+      \else
+        \draw (v\x)--(h\y);
+      \fi
+    }
+  }
+  
+  \node[fit=(v1)(v6)(h1),inner sep=6pt,overlay] (brbm1) {};
+  
+  % RBM 2
+  
+  \tikzstyle{gnode}=[shape=circle,draw=black,inner sep=0pt,
+  minimum width=12pt] 
+  
+  \foreach \x in {1,...,4} {
+    \node[gnode] (v\x) at (5.25, 0.6*\x - 1.5) {$v'_\x$};
+  }
+  
+  \foreach \y in {1,...,2} {
+    \node[gnode] (h\y) at (6.25, 0.65*\y - 0.975) {$h'_\y$};
+  }
+
+  \foreach \x in {1,...,4} {
+    \foreach \y in {1,...,2} {
+        \draw (v\x)--(h\y);
+    }
+  }
+  
+  \node[fit=(v1)(v4)(h1),inner sep=6pt,overlay] (brbm2) {};
+  
+  % Manifold coordinates
+  
+  \node[pin=90:Manifold\\ coordinates] (coordinates) at (7.75, 0) {
+  $\begin{pmatrix}M_1 \\ M_2\end{pmatrix}$
+  };
+  
+  % Annotations
+  
+  \draw[->] (bimage)--(brbm1);
+  \draw[->] (brbm1)--node[above=2pt] {$\vect{v}' = \vect{h}$} (brbm2);
+  \draw[->] (brbm2)--(coordinates);
+  
+  \coordinate (annotations) at ($(brbm1.north) + (0,4pt)$);
+  
+  \node at (annotations-|brbm1) {First RBM};
+  \node at (annotations-|brbm2) {Second RBM};
+  
+  \end{tikzpicture}
+  %}

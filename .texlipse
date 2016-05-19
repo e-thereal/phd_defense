@@ -1,0 +1,14 @@
+#TeXlipse project settings
+#Mon Mar 21 14:48:22 PDT 2016
+markTmpDer=true
+builderNum=2
+outputDir=
+makeIndSty=
+bibrefDir=
+outputFormat=pdf
+tempDir=tmp
+mainTexFile=defense.tex
+outputFile=defense.pdf
+langSpell=en
+markDer=true
+srcDir=
